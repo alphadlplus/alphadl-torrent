@@ -17,6 +17,7 @@ import math
 import aria2p
 from pyrogram.errors import FloodWait, MessageNotModified
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
+from tobrot.helper_funcs.renamer import Renamer_GD
 from tobrot import (
     ARIA_TWO_STARTED_PORT,
     AUTH_CHANNEL,
@@ -232,21 +233,23 @@ async def call_apropriate_function(
     if to_upload_file:
         if CUSTOM_FILE_NAME:
             if os.path.isfile(to_upload_file):
-                os.rename(to_upload_file,
-                          f"{CUSTOM_FILE_NAME}{to_upload_file}")
-                to_upload_file = f"{CUSTOM_FILE_NAME}{to_upload_file}"
+                custom_name= Renamer_GD(f"{to_upload_file}")
+                os.rename(f"{to_upload_file}", custom_name)
+                to_upload_file = f"{custom_name}"
             else:
                 for root, _, files in os.walk(to_upload_file):
                     LOGGER.info(files)
                     for org in files:
                         p_name = f"{root}/{org}"
-                        n_name = f"{root}/{CUSTOM_FILE_NAME}{org}"
+                        custom_name= Renamer_GD(f"{org}")
+                        n_name = f"{root}/{custom_name}"
                         os.rename(p_name, n_name)
                 to_upload_file = to_upload_file
 
     if cstom_file_name:
-        os.rename(to_upload_file, cstom_file_name)
-        to_upload_file = cstom_file_name
+        custom_name= Renamer_GD(f"{to_upload_file}")
+        os.rename(to_upload_file, custom_name)
+        to_upload_file = custom_name
     #
     response = {}
     #LOGGER.info(response)
